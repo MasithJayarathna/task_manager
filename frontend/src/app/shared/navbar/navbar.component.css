@@ -1,0 +1,57 @@
+mat-toolbar {
+    display: flex;
+    justify-content: space-between;  
+    align-items: center; 
+    padding: 10px 20px;
+  }
+  
+  .app-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  
+  .spacer {
+    flex: 1;
+  }
+  
+  .username {
+    font-size: 1rem;
+    color: white;
+    margin-right: 10px;  
+  }
+  
+  button {
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    text-transform: none;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+  }
+ 
+  button:hover {
+    color: #ff4081;
+  }
+  
+  @media (max-width: 768px) {
+    mat-toolbar {
+      padding: 10px 15px;
+    }
+  
+    .app-name {
+      font-size: 1.2rem;
+    }
+  
+    .username {
+      font-size: 0.9rem;
+    }
+  
+    button {
+      font-size: 0.9rem;
+      padding: 5px 10px;
+    }
+  }
+  

@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+    
+    <span class="app-name">Task</span>
+    <span class="spacer"></span>
+  
+    <button *ngIf="!isLoggedIn" mat-button routerLink="/login">Login</button>
+    <button *ngIf="!isLoggedIn" mat-button routerLink="/register">Register</button>
+  
+    <span *ngIf="isLoggedIn" class="username">Hello, {{ username }}</span>
+    <button *ngIf="isLoggedIn" mat-button (click)="logout()">Logout</button>
+  </mat-toolbar>
+  
