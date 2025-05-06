@@ -15,8 +15,7 @@ export class TaskService {
 
   getTasks(): Observable<Task[]> {
     console.log('Fetching tasks from API');
-    const headers = this.authService.getTokenHeader();
-    console.log('Headers:', headers);
+
     return this.http.get<Task[]>(this.apiUrl);
   }
 
