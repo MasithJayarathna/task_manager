@@ -1,0 +1,89 @@
+/* Gradient background */
+.footer {
+    background: linear-gradient(135deg, #3f51b5, #9c27b0); 
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+  }
+  
+ 
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  
+  .footer-logo {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 20px;
+  }
+  
+  
+  .social-icons {
+    margin: 10px 0;
+  }
+  
+  .social-icons a {
+    color: white;
+    margin: 0 15px;
+    font-size: 24px;
+    transition: color 0.3s ease;
+  }
+  
+  .social-icons a:hover {
+    color: #ff4081; 
+  }
+  
+
+  .footer-links {
+    margin: 15px 0;
+  }
+  
+  .footer-links a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-links a:hover {
+    color: #ff4081; 
+  }
+  
+
+  .footer-bottom {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .footer-container {
+      padding: 0 10px;
+    }
+  
+    .footer-logo {
+      font-size: 1.5rem;
+    }
+  
+    .social-icons a {
+      font-size: 20px;
+      margin: 0 10px;
+    }
+  
+    .footer-links {
+      margin: 10px 0;
+    }
+  
+    .footer-links a {
+      font-size: 0.9rem;
+    }
+  }
+  
