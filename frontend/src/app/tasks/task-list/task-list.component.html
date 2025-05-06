@@ -1,0 +1,26 @@
+<!-- task-list.component.html -->
+<mat-card class="task-list-card">
+    <h2 class="task-heading"><mat-icon>event_note</mat-icon> Upcoming Tasks</h2>
+    <mat-list>
+        <mat-list-item *ngFor="let task of tasks; trackBy: trackById">
+            <div class="task-content">
+                <div class="task-header">
+                    <h4>{{ task.title }}</h4>
+                    <div class="due-date">
+                        <mat-icon color="accent">schedule</mat-icon>
+                        <span>{{ task.dueDate | date: 'mediumDate' }}</span>
+                    </div>
+                </div>
+                <p class="description">{{ task.description }}</p>
+            </div>
+            <div class="task-actions">
+                <button mat-icon-button color="primary" (click)="edit.emit(task)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="delete.emit(task.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </mat-list-item>
+    </mat-list>
+</mat-card>
