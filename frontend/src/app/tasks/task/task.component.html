@@ -1,0 +1,47 @@
+<div class="add-task-btn">
+  <button mat-raised-button color="accent" (click)="toggleForm()">
+    {{ isFormVisible ? (isEditMode ? 'Cancel Edit' : 'Cancel') : 'Add Task' }}
+  </button>
+</div>
+  
+  <mat-card class="task-form-card" *ngIf="isFormVisible">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-fields">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" required />
+          <mat-error *ngIf="form.get('title')?.hasError('required')">Title is required</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Due Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dueDate" required [min]="today" readonly />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('dueDate')?.hasError('required')">
+            Due date is required
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+  
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          {{ isEditMode ? 'Update Task' : 'Add Task' }}
+        </button>
+        <!-- <button mat-icon-button color="warn" (click)="toggleForm()">
+          <mat-icon>close</mat-icon>
+        </button> -->
+      </div>
+    </form>
+  </mat-card>
+
+  <app-task-list 
+  [tasks]="upcomingTasks" 
+  (edit)="editTask($event)"
+  (delete)="deleteTask($event)">
+</app-task-list>
