@@ -27,6 +27,7 @@ export class AuthService {
         responseType: 'text' 
       }).pipe(
         tap((username: string) => {
+          this.isLoggedInSubject.next(true);
           console.log('Login successful, storing username:', username);
           localStorage.setItem('username', username);
         })
@@ -35,8 +36,17 @@ export class AuthService {
     
 
   register(data: { username: string; password: string }) {
-    return this.http.post(`${this.baseUrl}/register`, data);
+    return this.http.post(`${this.baseUrl}/register`, data,{ 
+      withCredentials: true,
+      responseType: 'text' 
+    }).pipe(
+      tap((res: string) => {
+        console.log('Registration successful: ', res);
+        this.router.navigate(['/login']);
+      })
+    );
   }
+  
 
   logout() {
     return this.http.post(`${this.baseUrl}/logout`, {}, {
@@ -77,14 +87,13 @@ export class AuthService {
   }
   
 //this will be needed when using the token as a Bearer, but rn i am using it as cookie
-  getTokenHeader(): any {
-    const authToken = this.cookieService.get(this.tokenKey);
-    console.log('Auth token:', authToken);
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${authToken}`
-    });
-    return headers
-  }
+  // getTokenHeader(): any {
+  //   const authToken = this.cookieService.get(this.tokenKey);
+  //   const headers = new HttpHeaders({
+  //     'Authorization': `Bearer ${authToken}`
+  //   });
+  //   return headers
+  // }
 
   getUsername(): string | null {
     const username = localStorage.getItem('username');

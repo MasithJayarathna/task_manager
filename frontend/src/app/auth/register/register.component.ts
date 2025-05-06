@@ -21,7 +21,7 @@ export class RegisterComponent {
   
    submit() {
      this.auth.register(this.form.value).subscribe({
-       next: () => this.router.navigate(['/tasks']),
+       next: () => this.router.navigate(['/login']),
        error: err => alert('Registration failed')
      });
    }
