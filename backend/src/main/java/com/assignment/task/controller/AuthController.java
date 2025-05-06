@@ -8,11 +8,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.Instant;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -42,7 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response) {
         log.info("Logging user: " + user.getUsername());
         try {
             String res = userService.authenticateUser(user);
@@ -52,7 +58,17 @@ public class AuthController {
             if(res.equals(KeyWords.INVALID_CREDENTIALS.name())){
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
             }
-            return ResponseEntity.ok(new AuthResponseDTO(res));
+
+            Cookie cookie = new Cookie("authToken", res);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(86400);
+            cookie.setDomain("localhost");
+
+            response.addCookie(cookie);
+
+            return ResponseEntity.ok().body(user.getUsername());
         }catch (BadCredentialsException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Password");
         }catch (Exception e) {
@@ -61,4 +77,40 @@ public class AuthController {
 
         }
     }
+
+
+    @GetMapping("/check")
+    public ResponseEntity<?> check(HttpServletRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+            return ResponseEntity.ok().body(Map.of(
+                    "status", "authenticated",
+                    "username", auth.getName()
+            ));
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request,
+                                    HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
+
+        Cookie cookie = new Cookie("authToken", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        if (request.isSecure()) {
+            cookie.setSecure(true);
+        }
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().body(Map.of(
+                "message", "Logout successful",
+                "timestamp", Instant.now()
+        ));
+    }
+
 }
