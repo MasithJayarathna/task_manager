@@ -1,15 +1,27 @@
 
 html, body {
-    height: 100%;
+  height: 100%;
     margin: 0;
     display: flex;
     flex-direction: column;
   }
-  
-  .task-list {
-    flex: 1; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+.success-snackbar {
+  background-color: green;
+  color: white;
+}
+
+.error-snackbar {
+  background-color: red;
+  color: white;
+}
+
