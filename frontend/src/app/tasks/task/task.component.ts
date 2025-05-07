@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaskService } from '../task.service';
 import { Task } from '../task.model';
+import {ConfirmDialogComponent} from "../../shared/confirm-dialog/confirm-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-task',
@@ -17,13 +19,13 @@ export class TaskComponent implements OnInit {
   isEditMode = false;
   editingTaskId: number | null = null;
 
-  constructor(private fb: FormBuilder, private taskService: TaskService) {
+  constructor(private fb: FormBuilder, private taskService: TaskService, private dialog: MatDialog) {
     this.form = this.fb.group({
       title: ['', Validators.required],
       description: [''],
       dueDate: ['', Validators.required]
     });
-    
+
     this.today = new Date().toISOString().split('T')[0];
   }
 
@@ -70,15 +72,25 @@ export class TaskComponent implements OnInit {
   }
 
   deleteTask(taskId: number): void {
-    this.taskService.deleteTask(taskId)
-      .subscribe(() => this.loadTasks());
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { message: 'Are you sure you want to delete this item?' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+      this.taskService.deleteTask(taskId)
+        .subscribe(() => this.loadTasks());
+      } else {
+        console.log('User cancelled delete');
+      }
+    });
   }
 
   editTask(task: Task): void {
     this.isFormVisible = true;
     this.isEditMode = true;
     this.editingTaskId = task.id || null;
-    
+
     this.form.patchValue({
       title: task.title,
       dueDate: task.dueDate,

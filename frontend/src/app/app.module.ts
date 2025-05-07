@@ -14,6 +14,8 @@ import { TaskComponent } from './tasks/task/task.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { TaskListComponent } from './tasks/task-list/task-list.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { TaskListComponent } from './tasks/task-list/task-list.component';
     RegisterComponent,
     NavbarComponent,
     FooterComponent,
-    TaskListComponent
+    TaskListComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ import { TaskListComponent } from './tasks/task-list/task-list.component';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
+    MatDialogModule,
   ],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
